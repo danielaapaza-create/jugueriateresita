@@ -206,3 +206,13 @@ create table public.processed_messages (
 );
 
 create index processed_messages_received_idx on public.processed_messages (received_at);
+
+-- RLS activo desde el primer momento (las políticas se crean en la siguiente migración).
+alter table public.admins               enable row level security;
+alter table public.business_settings    enable row level security;
+alter table public.products             enable row level security;
+alter table public.orders               enable row level security;
+alter table public.order_items          enable row level security;
+alter table public.order_status_history enable row level security;
+alter table public.customer_sessions    enable row level security;
+alter table public.processed_messages   enable row level security;
