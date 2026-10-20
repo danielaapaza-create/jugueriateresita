@@ -1,0 +1,49 @@
+# Pruebas automáticas en cada push y pull request (gratis en repos públicos;
+# en privados consume minutos del plan gratuito de GitHub Actions).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  bot:
+    name: Bot (Deno)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.5.x
+      - run: deno lint supabase/functions
+      - run: deno task check
+      - run: deno task test
+
+  database:
+    name: Base de datos (PostgreSQL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Migraciones y pruebas SQL
+        run: |
+          PGBIN=$(ls -d /usr/lib/postgresql/*/bin | sort -V | tail -1)
+          PGBIN="$PGBIN" ./scripts/test-sql.sh
+
+  admin:
+    name: Panel (React)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+      - run: npm ci
+      - run: npm run build
