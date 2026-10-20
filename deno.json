@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "test": "deno test --allow-env supabase/functions/tests/",
+    "check": "deno check supabase/functions/whatsapp-webhook/index.ts supabase/functions/admin-order-status/index.ts",
+    "lint": "deno lint supabase/functions"
+  },
+  "fmt": { "lineWidth": 120 }
+}
