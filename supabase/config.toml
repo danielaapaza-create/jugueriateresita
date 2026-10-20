@@ -1,0 +1,39 @@
+# Configuración de Supabase CLI (entorno local y despliegue de funciones).
+# Documentación: https://supabase.com/docs/guides/local-development/cli/config
+project_id = "jugueriateresita"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+
+[db.seed]
+# seed.sql SOLO se usa en local (supabase db reset). Nunca en producción.
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173"]
+# Nadie puede registrarse solo: las cuentas de administradoras se crean a mano.
+enable_signup = false
+
+[auth.email]
+enable_signup = false
+
+# Meta no envía tokens de Supabase: la autenticidad se valida con la firma
+# X-Hub-Signature-256 dentro de la función.
+[functions.whatsapp-webhook]
+verify_jwt = false
+
+# El panel llama a esta función con la sesión de la dueña.
+[functions.admin-order-status]
+verify_jwt = true

@@ -1,0 +1,23 @@
+# Secretos: NUNCA subir
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+supabase/.env
+admin/.env
+admin/.env.local
+
+# Dependencias y compilados
+node_modules/
+admin/dist/
+.vite/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Sistema / editores
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
